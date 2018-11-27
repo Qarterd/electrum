@@ -44,7 +44,7 @@ from .util import PrintError, print_error, log_exceptions, ignore_exceptions, bf
 from .bitcoin import COIN
 from . import constants
 from . import blockchain
-from .blockchain import Blockchain, HEADER_SIZE
+from .blockchain import Blockchain, HEADER_SIZE, local_hash
 from .interface import Interface, serialize_server, deserialize_server, RequestTimedOut
 from .version import PROTOCOL_VERSION
 from .simple_config import SimpleConfig
@@ -91,6 +91,8 @@ def filter_version(servers):
 def filter_noonion(servers):
     return {k: v for k, v in servers.items() if not k.endswith('.onion')}
 
+def filter_trusted(servers, trusted):
+    return {k: v for k, v in servers.items() if not trusted or v.get('trusted')}
 
 def filter_protocol(hostmap, protocol='s'):
     '''Filters the hostmap for those implementing protocol.
@@ -103,10 +105,10 @@ def filter_protocol(hostmap, protocol='s'):
     return eligible
 
 
-def pick_random_server(hostmap = None, protocol = 's', exclude_set = set()):
+def pick_random_server(hostmap = None, protocol = 's', trusted = True, exclude_set = set()):
     if hostmap is None:
         hostmap = constants.net.DEFAULT_SERVERS
-    eligible = list(set(filter_protocol(hostmap, protocol)) - exclude_set)
+    eligible = list(set(filter_protocol(filter_trusted(hostmap, not local_hash), protocol)) - exclude_set)
     return random.choice(eligible) if eligible else None
 
 
@@ -419,6 +421,7 @@ class Network(PrintError):
         # potentially filter out some
         if self.config.get('noonion'):
             out = filter_noonion(out)
+        out = filter_trusted(out, not local_hash)
         return out
 
     def _start_interface(self, server: str):

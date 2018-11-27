@@ -3,6 +3,7 @@
         "pruning": "-",
         "s": "50002",
         "t": "50001",
-        "version": "1.4"
+        "version": "1.4",
+        "trusted": true
     }
 }
