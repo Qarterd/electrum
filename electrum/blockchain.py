@@ -32,7 +32,7 @@ from .util import bfh, bh2u
 from .simple_config import SimpleConfig
 
 
-HEADER_SIZE = 80  # bytes
+HEADER_SIZE = 80 + 32 # bytes, with hash
 MAX_TARGET = 0x00000000FFFF0000000000000000000000000000000000000000000000000000
 
 
@@ -48,7 +48,8 @@ def serialize_header(header_dict: dict) -> str:
         + rev_hex(header_dict['merkle_root']) \
         + int_to_hex(int(header_dict['timestamp']), 4) \
         + int_to_hex(int(header_dict['bits']), 4) \
-        + int_to_hex(int(header_dict['nonce']), 4)
+        + int_to_hex(int(header_dict['nonce']), 4) \
+        + rev_hex(header_dict['hash'])
     return s
 
 def deserialize_header(s: bytes, height: int) -> dict:
@@ -64,6 +65,7 @@ def deserialize_header(s: bytes, height: int) -> dict:
     h['timestamp'] = hex_to_int(s[68:72])
     h['bits'] = hex_to_int(s[72:76])
     h['nonce'] = hex_to_int(s[76:80])
+    h['hash'] = hash_encode(s[80:112])
     h['block_height'] = height
     return h
 
@@ -76,7 +78,7 @@ def hash_header(header: dict) -> str:
 
 
 def hash_raw_header(header: str) -> str:
-    return hash_encode(sha256d(bfh(header)))
+    return hash_encode(bfh(header[-64:]))
 
 
 blockchains = {}  # type: Dict[int, Blockchain]
