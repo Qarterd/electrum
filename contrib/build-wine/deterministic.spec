@@ -2,6 +2,7 @@
 
 from PyInstaller.utils.hooks import collect_data_files, collect_submodules, collect_dynamic_libs
 
+import os
 import sys
 for i, x in enumerate(sys.argv):
     if x == '--name':
@@ -10,8 +11,8 @@ for i, x in enumerate(sys.argv):
 else:
     raise Exception('no name') 
 
-PYTHON_VERSION = '3.6.6'
-PYHOME = 'c:/python' + PYTHON_VERSION
+PYTHON_VERSION = '36'
+PYHOME = os.getenv('LOCALAPPDATA') + 'Programs\Python\Python' + PYTHON_VERSION
 
 home = '../../'
 
@@ -37,7 +38,7 @@ datas = [
     (home+'electrum/wordlist/english.txt', 'electrum/wordlist'),
     (home+'electrum/locale', 'electrum/locale'),
     (home+'electrum/plugins', 'electrum/plugins'),
-    ('C:\\Program Files (x86)\\ZBar\\bin\\', '.'),
+    (home+'LICENCE', '.'),
 ]
 datas += collect_data_files('trezorlib')
 datas += collect_data_files('safetlib')
