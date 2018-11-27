@@ -8,12 +8,12 @@ for i, x in enumerate(sys.argv):
         cmdline_name = sys.argv[i+1]
         break
 else:
-    raise Exception('no name')
+    raise Exception('no name') 
 
 PYTHON_VERSION = '3.6.6'
 PYHOME = 'c:/python' + PYTHON_VERSION
 
-home = 'C:\\electrum\\'
+home = '../../'
 
 # see https://github.com/pyinstaller/pyinstaller/issues/2005
 hiddenimports = []
@@ -25,12 +25,12 @@ hiddenimports += collect_submodules('websocket')
 hiddenimports += collect_submodules('ckcc')
 
 # Add libusb binary
-binaries = [(PYHOME+"/libusb-1.0.dll", ".")]
+binaries = [("binaries/libusb-1.0.dll", ".")]
 
 # Workaround for "Retro Look":
 binaries += [b for b in collect_dynamic_libs('PyQt5') if 'qwindowsvista' in b[0]]
 
-binaries += [('C:/tmp/libsecp256k1.dll', '.')]
+binaries += [("build/libsecp256k1.dll", '.')]
 
 datas = [
     (home+'electrum/*.json', 'electrum'),
@@ -46,7 +46,7 @@ datas += collect_data_files('keepkeylib')
 datas += collect_data_files('ckcc')
 
 # We don't put these files in to actually include them in the script but to make the Analysis method scan them for imports
-a = Analysis([home+'run_electrum',
+a = Analysis([home+'run_electrum', 
               home+'electrum/gui/qt/main_window.py',
               home+'electrum/gui/text.py',
               home+'electrum/util.py',
