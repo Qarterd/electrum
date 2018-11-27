@@ -129,7 +129,7 @@ Section
   CreateDirectory "$SMPROGRAMS\${PRODUCT_NAME}"
   CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\Uninstall.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\Uninstall.exe" 0
   CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\electrum-ray-${PRODUCT_VERSION}.exe" "" "$INSTDIR\electrum-ray-${PRODUCT_VERSION}.exe" 0
-  CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME} Testnet.lnk" "$INSTDIR\electrum-ray-${PRODUCT_VERSION}.exe" "--testnet" "$INSTDIR\electrum-ray-${PRODUCT_VERSION}.exe" 0
+  ;CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME} Testnet.lnk" "$INSTDIR\electrum-ray-${PRODUCT_VERSION}.exe" "--testnet" "$INSTDIR\electrum-ray-${PRODUCT_VERSION}.exe" 0
 
 
   ;Links raycoin: URI's to Electrum
