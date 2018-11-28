@@ -31,11 +31,10 @@ from . import constants
 from .util import bfh, bh2u
 from .simple_config import SimpleConfig
 
-local_hash = False
-
 HEADER_SIZE = 80 + 32 # bytes, with hash
 MAX_TARGET = 0x00000000FFFF0000000000000000000000000000000000000000000000000000
 
+local_hash = False
 
 class MissingHeader(Exception):
     pass

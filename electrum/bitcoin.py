@@ -293,7 +293,7 @@ def address_to_script(addr: str, *, net=None) -> str:
     if net is None:
         net = constants.net
     if not is_address(addr, net=net):
-        raise BitcoinException(f"invalid bitcoin address: {addr}")
+        raise BitcoinException(f"invalid raycoin address: {addr}")
     witver, witprog = segwit_addr.decode(net.SEGWIT_HRP, addr)
     if witprog is not None:
         if not (0 <= witver <= 16):

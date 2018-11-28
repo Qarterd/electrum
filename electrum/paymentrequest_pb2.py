@@ -363,5 +363,5 @@ _sym_db.RegisterMessage(PaymentACK)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\036org.bitcoin.protocols.paymentsB\006Protos'))
+DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\036org.raycoin.protocols.paymentsB\006Protos'))
 # @@protoc_insertion_point(module_scope)

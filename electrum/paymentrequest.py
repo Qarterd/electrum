@@ -46,8 +46,8 @@ from .transaction import TxOutput
 from .network import Network
 
 
-REQUEST_HEADERS = {'Accept': 'application/bitcoin-paymentrequest', 'User-Agent': 'Electrum'}
-ACK_HEADERS = {'Content-Type':'application/bitcoin-payment','Accept':'application/bitcoin-paymentack','User-Agent':'Electrum'}
+REQUEST_HEADERS = {'Accept': 'application/raycoin-paymentrequest', 'User-Agent': 'Electrum'}
+ACK_HEADERS = {'Content-Type':'application/raycoin-payment','Accept':'application/raycoin-paymentack','User-Agent':'Electrum'}
 
 ca_path = requests.certs.where()  # FIXME do we need to depend on requests here?
 ca_list = None
@@ -80,7 +80,7 @@ async def get_payment_request(url: str) -> 'PaymentRequest':
                     response.raise_for_status()
                     # Guard against `bitcoin:`-URIs with invalid payment request URLs
                     if "Content-Type" not in response.headers \
-                    or response.headers["Content-Type"] != "application/bitcoin-paymentrequest":
+                    or response.headers["Content-Type"] != "application/raycoin-paymentrequest":
                         data = None
                         error = "payment URL not pointing to a payment request handling server"
                     else:
