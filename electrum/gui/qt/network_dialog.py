@@ -35,6 +35,7 @@ from electrum import constants, blockchain
 from electrum.util import print_error
 from electrum.interface import serialize_server, deserialize_server
 from electrum.network import Network
+from electrum.blockchain import local_hash
 
 from .util import *
 
@@ -306,11 +307,18 @@ class NetworkChoiceLayout(object):
         grid.addWidget(self.height_label, 2, 1)
         grid.addWidget(HelpButton(msg), 2, 4)
 
+        self.trusted_label = QLabel('')
+        msg = _('Whether block hashes from official servers are being trusted as correct, or block hashes are being verified with a Raytracing GPU (disabled = most secure).')
+        grid.addWidget(QLabel(_('Trust Hashes') + ':'), 3, 0)
+        grid.addWidget(self.trusted_label, 3, 1)
+        grid.addWidget(HelpButton(msg), 3, 4)
+        self.trusted_label.setText(_('disabled') if local_hash else _('enabled'))
+
         self.split_label = QLabel('')
-        grid.addWidget(self.split_label, 3, 0, 1, 3)
+        grid.addWidget(self.split_label, 4, 0, 1, 3)
 
         self.nodes_list_widget = NodesListWidget(self)
-        grid.addWidget(self.nodes_list_widget, 5, 0, 1, 5)
+        grid.addWidget(self.nodes_list_widget, 6, 0, 1, 5)
 
         vbox = QVBoxLayout()
         vbox.addWidget(tabs)

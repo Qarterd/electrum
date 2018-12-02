@@ -53,20 +53,20 @@ if crowdin_api_key:
     print("", "export:", "-" * 20, response.text, "-" * 20, sep="\n")
 
 # Download & unzip
-print('Download translations')
-s = requests.request('GET', 'https://crowdin.com/backend/download/project/' + crowdin_identifier + '.zip').content
-zfobj = zipfile.ZipFile(io.BytesIO(s))
+#print('Download translations')
+#s = requests.request('GET', 'https://crowdin.com/backend/download/project/' + crowdin_identifier + '.zip').content
+#zfobj = zipfile.ZipFile(io.BytesIO(s))
 
-print('Unzip translations')
-for name in zfobj.namelist():
-    if not name.startswith('electrum-client/locale'):
-        continue
-    if name.endswith('/'):
-        if not os.path.exists(name[16:]):
-            os.mkdir(name[16:])
-    else:
-        with open(name[16:], 'wb') as output:
-            output.write(zfobj.read(name))
+#print('Unzip translations')
+#for name in zfobj.namelist():
+#    if not name.startswith('electrum-client/locale'):
+#        continue
+#    if name.endswith('/'):
+#        if not os.path.exists(name[16:]):
+#            os.mkdir(name[16:])
+#    else:
+#        with open(name[16:], 'wb') as output:
+#            output.write(zfobj.read(name))
 
 # Convert .po to .mo
 print('Installing')
