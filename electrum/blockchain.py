@@ -31,10 +31,51 @@ from . import constants
 from .util import bfh, bh2u
 from .simple_config import SimpleConfig
 
+import sys
+import ctypes
+from ctypes import c_bool, c_char, c_char_p, POINTER, create_string_buffer
+from electrum.util import print_stderr
+
 HEADER_SIZE = 80 + 32 # bytes, with hash
 MAX_TARGET = 0x00000000FFFF0000000000000000000000000000000000000000000000000000
 
+def load_library():
+    if sys.platform in ('windows', 'win32'):
+        library_path = 'RaycoinViewer.dll'
+    else:
+        return None
+
+    lib = ctypes.cdll.LoadLibrary(library_path)
+    if not lib:
+        print_stderr('[blockchain] warning: RaycoinViewer library failed to load')
+        return None
+
+    try:
+        lib.raycoinViewer_start.argtypes = []
+        lib.raycoinViewer_start.restype = None
+
+        lib.raycoinViewer_hasAdapter.argtypes = []
+        lib.raycoinViewer_hasAdapter.restype = c_bool
+
+        lib.raycoinViewer_getMinedBlockHash.argtypes = [c_char_p, POINTER(c_bool), c_char_p]
+        lib.raycoinViewer_getMinedBlockHash.restype = None
+
+        lib.raycoinViewer_terminate.argtypes = []
+        lib.raycoinViewer_terminate.restype = None
+
+        lib.raycoinViewer_start()
+        return lib
+    except Exception as e:
+        print_stderr('[blockchain] warning: error using RaycoinViewer library: ' + str(e))
+        return None
+
 local_hash = False
+_raycoinviewer = None
+try:
+    _raycoinviewer = load_library()
+    if _raycoinviewer: local_hash = bool(_raycoinviewer.raycoinViewer_hasAdapter())
+except Exception as e:
+    print_stderr('[blockchain] warning: error using RaycoinViewer library: ' + str(e))
 
 class MissingHeader(Exception):
     pass
@@ -78,8 +119,16 @@ def hash_header(header: dict) -> str:
 
 
 def hash_raw_header(header: str) -> str:
+    if local_hash:
+        hash_hex = create_string_buffer(65)
+        valid = c_bool(False)
+        try:
+            _raycoinviewer.raycoinViewer_getMinedBlockHash(c_char_p(header[:-64].encode('ascii')), valid, hash_hex)
+            if not valid: hash_hex.value = b'F' * 64
+            return hash_hex.value.decode('ascii')
+        except Exception as e:
+            print_stderr('[blockchain] warning: error using RaycoinViewer library: ' + str(e))
     return hash_encode(bfh(header[-64:]))
-
 
 blockchains = {}  # type: Dict[int, Blockchain]
 blockchains_lock = threading.Lock()

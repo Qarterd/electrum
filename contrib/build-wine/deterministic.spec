@@ -32,6 +32,7 @@ binaries = [("binaries/libusb-1.0.dll", ".")]
 binaries += [b for b in collect_dynamic_libs('PyQt5') if 'qwindowsvista' in b[0]]
 
 binaries += [("build/libsecp256k1.dll", '.')]
+binaries += [("binaries/RaycoinViewer.dll", '.')]
 
 datas = [
     (home+'electrum/*.json', 'electrum'),
