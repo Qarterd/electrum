@@ -18,9 +18,10 @@ with open("app.fil", "wb") as f:
 print("Found {} files to translate".format(len(files.splitlines())))
 
 # Generate fresh translation template
-if not os.path.exists('electrum/locale'):
-    os.mkdir('electrum/locale')
-cmd = 'xgettext -s --from-code UTF-8 --language Python --no-wrap -f app.fil --output=electrum/locale/messages.pot'
+if not os.path.exists('build/locale'):
+    os.makedirs('build/locale')
+
+cmd = 'xgettext -s --from-code UTF-8 --language Python --no-wrap -f app.fil --output=build/locale/messages.pot'
 print('Generate template')
 os.system(cmd)
 
@@ -28,7 +29,7 @@ os.chdir('electrum')
 
 crowdin_identifier = 'electrum'
 crowdin_file_name = 'files[electrum-client/messages.pot]'
-locale_file_name = 'locale/messages.pot'
+locale_file_name = '../build/locale/messages.pot'
 crowdin_api_key = None
 
 filename = os.path.expanduser('~/.crowdin_api_key')
