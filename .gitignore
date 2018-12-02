@@ -7,7 +7,7 @@ dist/
 contrib/pyinstaller/
 Electrum.egg-info/
 LC_MESSAGES/
-*/messages.pot
+messages.pot
 .devlocaltmp/
 *_trial_temp
 packages
