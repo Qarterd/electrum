@@ -25,7 +25,7 @@ Windows Binary Builds (PowerShell and WSL)
 	- pip install -r contrib\requirements\requirements-hw.txt
 	- pip install -r contrib\requirements\requirements-travis.txt
 	- cd contrib/build-wine
-	- pyinstaller.exe --noconfirm --ascii --name electrum-ray-$VERSION -w deterministic.spec
+	- pyinstaller.exe --clean --noconfirm --ascii --name electrum-ray-$VERSION -w deterministic.spec
 - in WSL:
 	- find dist -exec touch -d '2000-11-11T11:11:11+00:00' {} +
 - in PowerShell:
